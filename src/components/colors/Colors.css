@@ -1,0 +1,30 @@
+.colors-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 200px;
+  }
+
+  .color-disabled {
+    display: none;
+  }
+
+  .color {
+    margin: 5px 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+  }
+  
+  .color:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    border-radius: 50px;
+  }
+  
+  .color-selected {
+    border: 1px solid black;
+    transform: scale(1.2);
+  }

@@ -26,7 +26,9 @@ function App() {
       });
       setDrone(drone);
     }
-
+  }, [chat.member]);
+  
+  useEffect(() => {
     if (drone && !chat.member.id) {
       drone.on("open", (error) => {
         if (error) {
@@ -64,7 +66,7 @@ function App() {
 
       drone.on("error", (error) => console.error(error));
     }
-  }, [chat.member, chat, drone, currentMemberId, members]);
+  }, [chat, drone, currentMemberId, members]);
 
   return (
     <ChatContext.Provider value={{ chat, setChat }}>
