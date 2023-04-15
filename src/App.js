@@ -1,10 +1,90 @@
-import './App.css';
+import React, { useState, createContext, useEffect } from "react";
+
+import "./App.css";
+import Login from "./pages/login/Login";
+import Header from "./components/header/Header";
+import Messages from "./pages/messages/Messages";
+import Input from "./components/input/Input";
+
+export const ChatContext = createContext(null);
+
+const initialChat = {
+  member: { username: "", room: "", color: "" },
+  messages: [],
+};
 
 function App() {
-  return (
-    <div className="App">
+  const [chat, setChat] = useState(initialChat);
+  const [currentMemberId, setCurrentMemberId] = useState(null);
+  const [members, setMembers] = useState({ online: [] });
+  const [drone, setDrone] = useState(null);
 
-    </div>
+  useEffect(() => {
+    if (chat.member.username !== "") {
+      const drone = new window.Scaledrone("Dtc2lhpj7nfFndKN", {
+        data: chat.member,
+      });
+      setDrone(drone);
+    }
+
+    if (drone && !chat.member.id) {
+      drone.on("open", (error) => {
+        if (error) {
+          return console.error(error);
+        }
+
+        chat.member.id = drone.clientId;
+
+        if (currentMemberId === null) {
+          setCurrentMemberId(drone.clientId);
+        }
+        setChat({ ...chat }, chat.member);
+
+        const room = drone.subscribe(`observable-${chat.member.room}`);
+
+        room.on("open", (error) => {
+          if (error) {
+            console.error(error);
+          }
+        });
+        room.on("members", (m) => {
+          members.online = m;
+          setMembers({ ...members });
+        });
+        room.on("member_join", (member) => {
+          members.online.push(member);
+          setMembers({ ...members });
+        });
+        room.on("message", (message) => {
+          message.member.clientData.room = chat.member.room;
+          chat.messages.push(message);
+          setChat({ ...chat }, chat.messages);
+        });
+      });
+
+      drone.on("error", (error) => console.error(error));
+    }
+  }, [chat.member, chat, drone, currentMemberId, members]);
+
+  return (
+    <ChatContext.Provider value={{ chat, setChat }}>
+      {!chat.member.username ? (
+        <Login />
+      ) : (
+        <div className="chat">
+          <Header room={chat.member.room} members={members.online} />
+          <Messages
+            messages={chat.messages}
+            thisMember={chat.member}
+            initialMemberId={currentMemberId}
+          />
+          <Input
+            sendMessage={(obj) => drone.publish(obj)}
+            thisMember={chat.member}
+          />
+        </div>
+      )}
+    </ChatContext.Provider>
   );
 }
 
