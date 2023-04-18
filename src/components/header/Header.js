@@ -7,7 +7,7 @@ export default function Header({ room, members }) {
     <div className="header-container">
       <div className="header">
         <span className="header-logo">
-          <img src="../assets/chat_logo.svg" alt="chat logo" width="140" />
+          <img src="../assets/chat_logo_light.svg" alt="chat logo" width="140" />
         </span>
         <div className="room-container">
         <span className="room">Room:</span>

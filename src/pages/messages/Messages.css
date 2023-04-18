@@ -1,0 +1,20 @@
+.msg-list {
+    flex-grow: 1;
+    list-style: none;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    margin: 15px 15px 30px 15px;
+    background-color: rgb(245, 245, 245);
+    border: none;
+    border-radius: 10px;
+}
+
+.msg-list {
+    scrollbar-width: thin;
+    scrollbar-color: gray
+}
+
+.msg-list::-webkit-scrollbar {
+    width: 10px;
+    height: 0px;
+}

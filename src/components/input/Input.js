@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 
 import "./Input.css";
 
-export default function Input({ sendMessage, thisMember }) {
+export default function Input({ sendMessage, firstMember }) {
   const initialInput = {
     text: ""
   };
@@ -17,7 +17,7 @@ export default function Input({ sendMessage, thisMember }) {
 
   function submitInput(e) {
       sendMessage({
-        room: `observable-${thisMember.room}`,
+        room: `observable-${firstMember.room}`,
         message: input.text,
       });
       setInput({ text: "" });

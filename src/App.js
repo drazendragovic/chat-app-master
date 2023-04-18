@@ -15,7 +15,7 @@ const initialChat = {
 
 function App() {
   const [chat, setChat] = useState(initialChat);
-  const [currentMemberId, setCurrentMemberId] = useState(null);
+  const [firstMemberId, setFirstMemberId] = useState(null);
   const [members, setMembers] = useState({ online: [] });
   const [drone, setDrone] = useState(null);
 
@@ -37,8 +37,8 @@ function App() {
 
         chat.member.id = drone.clientId;
 
-        if (currentMemberId === null) {
-          setCurrentMemberId(drone.clientId);
+        if (firstMemberId === null) {
+          setFirstMemberId(drone.clientId);
         }
         setChat({ ...chat }, chat.member);
 
@@ -66,7 +66,7 @@ function App() {
 
       drone.on("error", (error) => console.error(error));
     }
-  }, [chat, drone, currentMemberId, members]);
+  }, [chat, drone, firstMemberId, members]);
 
   return (
     <ChatContext.Provider value={{ chat, setChat }}>
@@ -77,12 +77,11 @@ function App() {
           <Header room={chat.member.room} members={members.online} />
           <Messages
             messages={chat.messages}
-            thisMember={chat.member}
-            initialMemberId={currentMemberId}
+            firstMember={chat.member}
           />
           <Input
             sendMessage={(obj) => drone.publish(obj)}
-            thisMember={chat.member}
+            firstMember={chat.member}
           />
         </div>
       )}

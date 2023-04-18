@@ -7,16 +7,13 @@
     display: flex;
     gap: 5px;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0 15px 20px 15px;
 }
 
 .chat-message-input {
     padding: 15px 15px;
     font-size: 16px;
     flex-grow: 1;
-    border: 1px solid rgb(202, 202, 202);
-    border-radius: 10px;
     user-select: auto;
 }
 
@@ -26,7 +23,8 @@
     border: 1px solid rgb(202, 202, 202);
     border-radius: 7px;
     padding: 0 8px 0 12px;
-    background-color: rgb(255, 176, 30)
+    background-color: rgb(255, 176, 30);
+    transition: background-color 0.4s;
 }
 
 .chat-message-btn:hover {
@@ -47,9 +45,9 @@
 
 .error-msg {
     position: absolute;
-    padding: 10px;
+    padding: 5px;
     background-color: white;
-    top: -35px;
-    right: 70px;
+    top: -27px;
+    right: 65px;
     font-size: 14px;
 }
