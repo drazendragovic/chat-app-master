@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 
 import "./Input.css";
 
 export default function Input({ sendMessage, firstMember }) {
   const initialInput = {
-    text: ""
+    text: "",
   };
 
-  const { register, handleSubmit, formState: { errors }} = useForm();
-  const [input, setInput] = useState(initialInput);
-
-  function changeInput(e) {
-    setInput({ ...input, text: e.target.value });
-  }
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({defaultValues: initialInput});
 
   function submitInput(e) {
-      sendMessage({
-        room: `observable-${firstMember.room}`,
-        message: input.text,
-      });
-      setInput({ text: "" });
+    sendMessage({
+      room: `observable-${firstMember.room}`,
+      message: e.chatMessage,
+    });
+    reset();
   }
 
   return (
@@ -29,20 +29,17 @@ export default function Input({ sendMessage, firstMember }) {
         <input
           className="chat-message-input"
           type="text"
+          placeholder="Start chating..."
           {...register("chatMessage", {
             required: "You forgot to enter the chat!",
             maxLength: { value: 50, message: "Your chat is to long (50 max)!" },
           })}
-          placeholder="Start chating..."
           autoFocus={true}
-          value={input.text}
-          onChange={changeInput}
         />
-        {errors.chatMessage && <span className="error-msg">{errors.chatMessage.message}</span>}
-        <button
-          className="chat-message-btn"
-          type="submit"
-        >
+        {errors.chatMessage && (
+          <span className="error-msg">{errors.chatMessage.message}</span>
+        )}
+        <button className="chat-message-btn" type="submit">
           <img src="../assets/send_white.svg" alt="send-chat" width="15" />
         </button>
       </form>
